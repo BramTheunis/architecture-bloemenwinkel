@@ -58,8 +58,8 @@ namespace BasicRestAPI.Repositories
                 throw new NotFoundException();
             }
 
-            store.Name = name;
-            store.Region = region;
+            store.Name = Name;
+            store.Region = Region;
             _context.SaveChanges();
             return store;
         }
