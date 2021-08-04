@@ -1,7 +1,7 @@
 using System.Linq;
 using BasicRestAPI.Model;
-using BasicRestAPI.Model.Web;
-using BasicRestAPI.Repositories;
+// using BasicRestAPI.Model.Web;
+// using BasicRestAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +43,7 @@ namespace BasicRestAPI.Controllers
             _logger.LogInformation($"Creating a flower for store {storeId}");
             try
             {
-                var persistedFlower = _flowerRepository.Insert(flowerId, input.Name, input.Brand);
+                var persistedFlower = _flowerRepository.Insert(flowerId, input.Name, input.Price, input.Description);
                 return Created($"/stores/{storeId}/flowers/{persistedFlower.Id}", persistedFlower.Convert());
             }
             catch (NotFoundException)
@@ -58,7 +58,7 @@ namespace BasicRestAPI.Controllers
             _logger.LogInformation($"Updating flower {flowerId} for store {storeId}");
             try
             {
-                _flowerRepository.Update(storeId, flowerId, input.Name, input.Brand);
+                _flowerRepository.Update(storeId, flowerId, input.Name, input.Price, input.Description);
                 return Accepted();
             }
             catch (NotFoundException)

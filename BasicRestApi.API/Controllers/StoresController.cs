@@ -1,7 +1,7 @@
 using System.Linq;
 using BasicRestAPI.Model;
-using BasicRestAPI.Model.Web;
-using BasicRestAPI.Repositories;
+// using BasicRestAPI.Model.Web;
+// using BasicRestAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -40,7 +40,7 @@ namespace BasicRestAPI.Controllers
         public IActionResult CreateStore(StoreUpsertInput input)
         {
             _logger.LogInformation("Creating a store", input);
-            var persistedStore = _storeRepository.Insert(input.Name);
+            var persistedStore = _storeRepository.Insert(input.Name, input.Address, input.region);
             return Created($"/stores/{persistedStore.Id}", persistedStore.Convert());
         }
 
@@ -50,7 +50,7 @@ namespace BasicRestAPI.Controllers
             _logger.LogInformation("Updating a store", input);
             try
             {
-                var store = _storeRepository.Update(id, input.Name);
+                var store = _storeRepository.Update(id, input.Name, input.Address, input.region);
                 return Accepted(store.Convert());
             }
             catch (NotFoundException)
