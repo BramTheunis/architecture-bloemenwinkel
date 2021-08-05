@@ -11,14 +11,17 @@ using Microsoft.Extensions.Hosting;
 using BasicRestAPI.Database;
 using BasicRestAPI.Repositories;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasicRestApi.API
 {
     public class Startup
     {
+        string FlowerstoreDBMySQL;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            FlowerstoreDBMySQL = configuration.GetConnectionString("FlowerstoreConnection");
         }
 
         public IConfiguration Configuration { get; }
@@ -28,7 +31,14 @@ namespace BasicRestApi.API
         {
             services.AddControllersWithViews();
             services.AddControllers();
-            services.AddDbContext<ProjectDatabaseContext>();
+            services.AddDbContextPool<ProjectDatabaseContext>(    
+                dbContextOptions => dbContextOptions 
+                    .UseMySql(
+                        FlowerstoreDBMySQL,
+                        
+                        new MySqlServerVersion(new Version(10, 4, 11))
+                        
+            ));
             services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddTransient<IFlowerRepository, FlowerRepository>();
             services.AddSwaggerGen(c =>
