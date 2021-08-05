@@ -8,7 +8,7 @@ namespace BasicRestAPI.Database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseSqlite("Data Source=flowerstore.db");
 
-        public DbSet<Store> Stores { get; set; }
-        public DbSet<Flower> Flowers { get; set; }
+        public DbSet<Store> Stores { get; set; } = null!;
+        public DbSet<Flower> Flowers { get; set; } = null!;
     }
 }

@@ -9,13 +9,13 @@ namespace BasicRestAPI.Model.Web
 
         [Required]
         [StringLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         
         [Required]
         public int Price { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
     }
 }

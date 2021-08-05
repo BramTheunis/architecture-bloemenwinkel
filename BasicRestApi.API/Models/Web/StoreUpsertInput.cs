@@ -8,10 +8,10 @@ namespace BasicRestAPI.Model.Web
 
         [Required]
         [StringLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Required]
         [StringLength(255)]
-        public string Region { get; set; }
+        public string Region { get; set; } = null!;
     }
 }
