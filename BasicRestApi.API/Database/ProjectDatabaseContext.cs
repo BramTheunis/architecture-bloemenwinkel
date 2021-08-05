@@ -5,8 +5,10 @@ namespace BasicRestAPI.Database
 {
     public class ProjectDatabaseContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlite("Data Source=flowerstore.db");
+        public ProjectDatabaseContext(DbContextOptions<ProjectDatabaseContext> ctx) : base(ctx)
+        {
+            
+        }
 
         public DbSet<Store> Stores { get; set; } = null!;
         public DbSet<Flower> Flowers { get; set; } = null!;

@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using BasicRestAPI.Database;
+using BasicRestAPI.Repositories;
+using Microsoft.OpenApi.Models;
 
 namespace BasicRestApi.API
 {
@@ -24,6 +27,18 @@ namespace BasicRestApi.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddControllers();
+            services.AddDbContext<ProjectDatabaseContext>();
+            services.AddTransient<IStoreRepository, StoreRepository>();
+            services.AddTransient<IFlowerRepository, FlowerRepository>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Flowerstore API",
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
