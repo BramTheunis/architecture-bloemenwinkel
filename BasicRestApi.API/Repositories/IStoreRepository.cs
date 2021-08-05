@@ -8,7 +8,7 @@ namespace BasicRestAPI.Repositories
         IEnumerable<Store> GetAllStores();
         Store GetOneStoreById(int id);
         void Delete(int id);
-        Store Insert(int id, string Name, string Region);
-        Store Update(int id, string Name, string Region);
+        Store Insert(int id, string Name, string Region, string StreetName, int Number);
+        Store Update(int id, string Name, string Region, string StreetName, int Number);
     }
 }

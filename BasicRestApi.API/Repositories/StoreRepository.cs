@@ -37,20 +37,22 @@ namespace BasicRestAPI.Repositories
             _context.SaveChanges();
         }
 
-        public Store Insert(int Id, string Name, string Region)
+        public Store Insert(int Id, string Name, string Region, string StreetName, int Number)
         {
             var store = new Store
             {
                 Id = Id,
                 Name = Name,
-                Region = Region
+                Region = Region,
+                StreetName = StreetName,
+                Number = Number
             };
             _context.Stores.Add(store);
             _context.SaveChanges();
             return store;
         }
 
-        public Store Update(int Id, string Name, string Region)
+        public Store Update(int Id, string Name, string Region, string StreetName, int Number)
         {
             var store = _context.Stores.Find(Id);
             if (store == null)
@@ -60,6 +62,8 @@ namespace BasicRestAPI.Repositories
 
             store.Name = Name;
             store.Region = Region;
+            store.StreetName = StreetName;
+            store.Number = Number;
             _context.SaveChanges();
             return store;
         }

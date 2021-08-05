@@ -13,5 +13,12 @@ namespace BasicRestAPI.Model.Web
         [Required]
         [StringLength(255)]
         public string Region { get; set; } = null!;
+
+        [Required]
+        [StringLength(255)]
+        public string StreetName { get; set; } = null!;
+
+        [Required]
+        public int Number { get; set; }
     }
 }

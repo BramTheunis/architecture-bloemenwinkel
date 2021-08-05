@@ -40,7 +40,7 @@ namespace BasicRestAPI.Controllers
         public IActionResult CreateStore(StoreUpsertInput input)
         {
             _logger.LogInformation("Creating a store", input);
-            var persistedStore = _storeRepository.Insert(input.Id, input.Name, input.Region);
+            var persistedStore = _storeRepository.Insert(input.Id, input.Name, input.Region, input.StreetName, input.Number);
             return Created($"/stores/{persistedStore.Id}", persistedStore);
         }
 
@@ -50,7 +50,7 @@ namespace BasicRestAPI.Controllers
             _logger.LogInformation("Updating a store", input);
             try
             {
-                var store = _storeRepository.Update(input.Id, input.Name, input.Region);
+                var store = _storeRepository.Update(input.Id, input.Name, input.Region, input.StreetName, input.Number);
                 return Accepted(store);
             }
             catch (NotFoundException)
