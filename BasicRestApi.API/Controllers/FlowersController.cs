@@ -60,7 +60,7 @@ namespace BasicRestAPI.Controllers
             }
         }
 
-        [HttpPatch("{flowers/{Id}}")]
+        [HttpPatch("{Id}")]
         public IActionResult UpdateFlowerInStore(int Id, FlowerUpsertInput input)
         {
             _logger.LogInformation($"Updating flower {Id}");
@@ -75,7 +75,7 @@ namespace BasicRestAPI.Controllers
             }
         }
 
-        [HttpDelete("{flowers/{Id}")]
+        [HttpDelete("{Id}")]
         public IActionResult DeleteFlowerFromStore(int Id)
         {
             _logger.LogInformation($"Deleting flower {Id}");

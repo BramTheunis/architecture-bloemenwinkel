@@ -9,9 +9,9 @@ namespace BasicRestAPI.Repositories
 {
     public class FlowerRepository : IFlowerRepository
     {
-        private readonly GarageDatabaseContext _context;
+        private readonly ProjectDatabaseContext _context;
 
-        public FlowerRepository(GarageDatabaseContext context)
+        public FlowerRepository(ProjectDatabaseContext context)
         {
             _context = context;
         }

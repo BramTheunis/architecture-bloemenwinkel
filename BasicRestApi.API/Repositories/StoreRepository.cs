@@ -8,9 +8,9 @@ namespace BasicRestAPI.Repositories
 {
     public class StoreRepository : IStoreRepository
     {
-        private readonly StoreDatabaseContext _context;
+        private readonly ProjectDatabaseContext _context;
 
-        public StoreRepository(StoreDatabaseContext context)
+        public StoreRepository(ProjectDatabaseContext context)
         {
             _context = context;
         }
