@@ -1,7 +1,7 @@
 using System.Linq;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Web;
-// using BasicRestAPI.Repositories;
+using BasicRestAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,7 +24,7 @@ namespace BasicRestAPI.Controllers
         public IActionResult GetAllStores()
         {
             _logger.LogInformation("Getting all stores");
-            var stores = _storeRepository.GetAllStores().Select(x => x.Convert()).ToList();
+            var stores = _storeRepository.GetAllStores();
             return Ok(stores);
         }
 
@@ -33,15 +33,15 @@ namespace BasicRestAPI.Controllers
         {
             _logger.LogInformation("Getting store by id", id);
             var store = _storeRepository.GetOneStoreById(id);
-            return store == null ? (IActionResult) NotFound() : Ok(store.Convert());
+            return store == null ? (IActionResult) NotFound() : Ok(store);
         }
 
         [HttpPost]
         public IActionResult CreateStore(StoreUpsertInput input)
         {
             _logger.LogInformation("Creating a store", input);
-            var persistedStore = _storeRepository.Insert(input.Name, input.Address, input.region);
-            return Created($"/stores/{persistedStore.Id}", persistedStore.Convert());
+            var persistedStore = _storeRepository.Insert(input.Id, input.Name, input.Region);
+            return Created($"/stores/{persistedStore.Id}", persistedStore);
         }
 
         [HttpPatch("{id}")]
@@ -50,8 +50,8 @@ namespace BasicRestAPI.Controllers
             _logger.LogInformation("Updating a store", input);
             try
             {
-                var store = _storeRepository.Update(id, input.Name, input.Address, input.region);
-                return Accepted(store.Convert());
+                var store = _storeRepository.Update(input.Id, input.Name, input.Region);
+                return Accepted(store);
             }
             catch (NotFoundException)
             {
