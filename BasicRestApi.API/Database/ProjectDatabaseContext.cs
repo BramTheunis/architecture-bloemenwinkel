@@ -12,5 +12,6 @@ namespace BasicRestAPI.Database
 
         public DbSet<Store> Stores { get; set; } = null!;
         public DbSet<Flower> Flowers { get; set; } = null!;
+        public DbSet<Sale> Sales { get; set; } = null!;
     }
 }

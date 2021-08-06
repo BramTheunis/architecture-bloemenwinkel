@@ -1,5 +1,3 @@
-using BasicRestAPI.Model.Domain;
-
 namespace BasicRestAPI.Model.Web
 {
     public class FlowerWebOutput

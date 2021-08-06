@@ -2,19 +2,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BasicRestAPI.Model.Web
 {
-    public class FlowerUpsertInput
+    public class SaleUpsertInput
     {
         public int Id { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Name { get; set; } = null!;
+        public int Quantity { get; set; }
         
         [Required]
-        public int Price { get; set; }
+        public int FlowerId { get; set; }
 
         [Required]
         [StringLength(255)]
-        public string Description { get; set; } = null!;
+        public int StoreId { get; set; }
     }
 }

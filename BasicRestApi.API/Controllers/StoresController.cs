@@ -1,4 +1,3 @@
-using System.Linq;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Web;
 using BasicRestAPI.Repositories;

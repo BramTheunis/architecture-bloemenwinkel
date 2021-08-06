@@ -41,6 +41,7 @@ namespace BasicRestApi.API
             ));
             services.AddTransient<IStoreRepository, StoreRepository>();
             services.AddTransient<IFlowerRepository, FlowerRepository>();
+            services.AddTransient<ISaleRepository, SaleRepository>();
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {

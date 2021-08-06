@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BasicRestAPI.Model.Domain
 {
     public class Store : BaseDatabaseClass
