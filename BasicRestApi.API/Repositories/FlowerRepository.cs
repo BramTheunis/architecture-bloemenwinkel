@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using BasicRestAPI.Database;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Domain;
-// using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasicRestAPI.Repositories
 {
@@ -15,18 +15,19 @@ namespace BasicRestAPI.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Flower> GetAllFlowers()
+        public async Task<IEnumerable<Flower>> GetAllFlowers()
         {
-            return _context.Flowers.ToList();
+            return await _context.Flowers.ToListAsync();
+            
         }
 
-        public Flower GetOneFlowerById(int Id)
+        public async Task<Flower> GetOneFlowerById(int Id)
         {
-            return _context.Flowers.Find(Id);
+            return await _context.Flowers.FindAsync(Id);
         }
 
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
             var flower = _context.Flowers.Find(Id);
             if (flower == null)
@@ -35,10 +36,10 @@ namespace BasicRestAPI.Repositories
             }
 
             _context.Flowers.Remove(flower);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Flower Insert(int Id, string Name, int Price, string Description)
+        public async Task<Flower> Insert(int Id, string Name, int Price, string Description)
         {
             var flower = new Flower
             {
@@ -48,12 +49,12 @@ namespace BasicRestAPI.Repositories
                 Description = Description
             };
             _context.Flowers.Add(flower);
-            _context.SaveChanges();
-            return flower;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(flower);
 
         }
 
-        public Flower Update(int Id, string Name, int Price, string Description)
+        public async Task<Flower> Update(int Id, string Name, int Price, string Description)
         {
             var flower = _context.Flowers.Find(Id);
             if (flower == null)
@@ -64,8 +65,8 @@ namespace BasicRestAPI.Repositories
             flower.Name = Name;
             flower.Price = Price;
             flower.Description = Description;
-            _context.SaveChanges();
-            return flower;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(flower);
         }
     }
 }

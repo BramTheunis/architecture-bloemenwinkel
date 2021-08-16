@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Web;
 using BasicRestAPI.Repositories;
@@ -23,12 +24,12 @@ namespace BasicRestAPI.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllFlowers()
+        public async Task<IActionResult> GetAllFlowers()
         {
             _logger.LogInformation($"Getting all flowers");
             try
             {
-                return Ok(_flowerRepository.GetAllFlowers());
+                return Ok(await _flowerRepository.GetAllFlowers());
             }
             catch (NotFoundException)
             {
@@ -37,20 +38,20 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpGet("{Id}")]
-        public IActionResult GetOneFlower(int Id)
+        public async Task<IActionResult> GetOneFlower(int Id)
         {
             _logger.LogInformation("Getting flower by id", Id);
-            var flower = _flowerRepository.GetOneFlowerById(Id);
+            var flower = await _flowerRepository.GetOneFlowerById(Id);
             return flower == null ? (IActionResult) NotFound() : Ok(flower);
         }
 
         [HttpPost]
-        public IActionResult CreateFlower(int storeId, FlowerUpsertInput input)
+        public async Task<IActionResult> CreateFlower(int storeId, FlowerUpsertInput input)
         {
             _logger.LogInformation($"Creating a flower");
             try
             {
-                var persistedFlower = _flowerRepository.Insert(input.Id, input.Name, input.Price, input.Description);
+                var persistedFlower = await _flowerRepository.Insert(input.Id, input.Name, input.Price, input.Description);
                 return Created($"/flowers/{persistedFlower.Id}", persistedFlower);
             }
             catch (NotFoundException)
@@ -60,12 +61,12 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpPatch("{Id}")]
-        public IActionResult UpdateFlowerInStore(int Id, FlowerUpsertInput input)
+        public async Task<IActionResult> UpdateFlowerInStore(int Id, FlowerUpsertInput input)
         {
             _logger.LogInformation($"Updating flower {Id}");
             try
             {
-                _flowerRepository.Update(input.Id, input.Name, input.Price, input.Description);
+                await _flowerRepository.Update(input.Id, input.Name, input.Price, input.Description);
                 return Accepted();
             }
             catch (NotFoundException)
@@ -75,12 +76,12 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public IActionResult DeleteFlowerFromStore(int Id)
+        public async Task<IActionResult> DeleteFlowerFromStore(int Id)
         {
             _logger.LogInformation($"Deleting flower {Id}");
             try
             {
-                _flowerRepository.Delete(Id);
+                await _flowerRepository.Delete(Id);
             }
             catch (NotFoundException)
             {
