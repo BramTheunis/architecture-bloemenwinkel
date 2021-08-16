@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Web;
 using BasicRestAPI.Repositories;
@@ -20,36 +21,36 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllSales()
+        public async Task<IActionResult> GetAllSales()
         {
             _logger.LogInformation("Getting all sales");
-            var sales = _saleRepository.GetAllSales();
+            var sales = await _saleRepository.GetAllSales();
             return Ok(sales);
         }
 
         [HttpGet("{id}")]
-        public IActionResult SaleById(int id)
+        public async Task<IActionResult> SaleById(int id)
         {
             _logger.LogInformation("Getting sale by id", id);
-            var sale = _saleRepository.GetOneSaleById(id);
+            var sale = await _saleRepository.GetOneSaleById(id);
             return sale == null ? (IActionResult) NotFound() : Ok(sale);
         }
 
         [HttpPost]
-        public IActionResult CreateSale(SaleUpsertInput input)
+        public async Task<IActionResult> CreateSale(SaleUpsertInput input)
         {
             _logger.LogInformation("Creating a sale", input);
-            var persistedSale = _saleRepository.Insert(input.Id, input.Quantity, input.FlowerId, input.StoreId);
+            var persistedSale = await _saleRepository.Insert(input.Id, input.Quantity, input.FlowerId, input.StoreId);
             return Created($"/sales/{persistedSale.Id}", persistedSale);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateSale(int id, SaleUpsertInput input)
+        public async Task<IActionResult> UpdateSale(int id, SaleUpsertInput input)
         {
             _logger.LogInformation("Updating a sale", input);
             try
             {
-                var sale = _saleRepository.Update(input.Id, input.Quantity, input.FlowerId, input.StoreId);
+                var sale = await _saleRepository.Update(input.Id, input.Quantity, input.FlowerId, input.StoreId);
                 return Accepted(sale);
             }
             catch (NotFoundException)
@@ -59,13 +60,13 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteSale(int id)
+        public async Task<IActionResult> DeleteSale(int id)
         {
             _logger.LogInformation("Deleting a sale", id);
             try
             {
-                _saleRepository.Delete(id);
-               return NoContent();
+                await _saleRepository.Delete(id);
+                return NoContent();
             }
             catch (NotFoundException)
             {

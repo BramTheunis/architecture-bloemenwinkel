@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using BasicRestAPI.Database;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasicRestAPI.Repositories
 {
@@ -15,29 +16,29 @@ namespace BasicRestAPI.Repositories
             _context = context;
         }
 
-        public IEnumerable<Sale> GetAllSales()
+        public async Task<IEnumerable<Sale>> GetAllSales()
         {
-            return _context.Sales.ToList();
+            return await _context.Sales.ToListAsync();
         }
 
-        public Sale GetOneSaleById(int Id)
+        public async Task<Sale> GetOneSaleById(int Id)
         {
-            return _context.Sales.Find(Id);
+            return await _context.Sales.FindAsync(Id);
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            var sale = _context.Sales.Find(Id);
+            var sale =  await _context.Sales.FindAsync(Id);
             if (sale == null)
             {
                 throw new NotFoundException();
             }
 
             _context.Sales.Remove(sale);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Sale Insert(int Id, int Quantity, int FlowerId, int StoreId)
+        public async Task<Sale> Insert(int Id, int Quantity, int FlowerId, int StoreId)
         {
             var sale = new Sale
             {
@@ -47,13 +48,13 @@ namespace BasicRestAPI.Repositories
                 StoreId = StoreId
             };
             _context.Sales.Add(sale);
-            _context.SaveChanges();
-            return sale;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(sale);
         }
 
-        public Sale Update(int Id, int Quantity, int FlowerId, int StoreId)
+        public async Task<Sale> Update(int Id, int Quantity, int FlowerId, int StoreId)
         {
-            var sale = _context.Sales.Find(Id);
+            var sale = await _context.Sales.FindAsync(Id);
             if (sale == null)
             {
                 throw new NotFoundException();
@@ -62,9 +63,8 @@ namespace BasicRestAPI.Repositories
             sale.Quantity = Quantity;
             sale.FlowerId = FlowerId;
             sale.StoreId = StoreId;
-            _context.SaveChanges();
-            return sale;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(sale);
         }
-
     }
 }
