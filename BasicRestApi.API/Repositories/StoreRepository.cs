@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using BasicRestAPI.Database;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace BasicRestAPI.Repositories
 {
@@ -15,29 +16,29 @@ namespace BasicRestAPI.Repositories
             _context = context;
         }
 
-        public IEnumerable<Store> GetAllStores()
+        public async Task<IEnumerable<Store>> GetAllStores()
         {
-            return _context.Stores.ToList();
+            return await _context.Stores.ToListAsync();
         }
 
-        public Store GetOneStoreById(int Id)
+        public async Task<Store> GetOneStoreById(int Id)
         {
-            return _context.Stores.Find(Id);
+            return await _context.Stores.FindAsync(Id);
         }
 
-        public void Delete(int Id)
+        public async Task Delete(int Id)
         {
-            var store = _context.Stores.Find(Id);
+            var store = await _context.Stores.FindAsync(Id);
             if (store == null)
             {
                 throw new NotFoundException();
             }
 
             _context.Stores.Remove(store);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Store Insert(int Id, string Name, string Region, string StreetName, int Number)
+        public async Task<Store> Insert(int Id, string Name, string Region, string StreetName, int Number)
         {
             var store = new Store
             {
@@ -48,13 +49,13 @@ namespace BasicRestAPI.Repositories
                 Number = Number
             };
             _context.Stores.Add(store);
-            _context.SaveChanges();
-            return store;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(store);
         }
 
-        public Store Update(int Id, string Name, string Region, string StreetName, int Number)
+        public async Task<Store> Update(int Id, string Name, string Region, string StreetName, int Number)
         {
-            var store = _context.Stores.Find(Id);
+            var store = await _context.Stores.FindAsync(Id);
             if (store == null)
             {
                 throw new NotFoundException();
@@ -64,8 +65,8 @@ namespace BasicRestAPI.Repositories
             store.Region = Region;
             store.StreetName = StreetName;
             store.Number = Number;
-            _context.SaveChanges();
-            return store;
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(store);
         }
 
     }

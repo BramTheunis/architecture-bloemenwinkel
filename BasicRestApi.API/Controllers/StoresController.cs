@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BasicRestAPI.Model;
 using BasicRestAPI.Model.Web;
 using BasicRestAPI.Repositories;
@@ -20,36 +21,36 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllStores()
+        public async Task<IActionResult> GetAllStores()
         {
             _logger.LogInformation("Getting all stores");
-            var stores = _storeRepository.GetAllStores();
+            var stores = await _storeRepository.GetAllStores();
             return Ok(stores);
         }
 
         [HttpGet("{id}")]
-        public IActionResult StoreById(int id)
+        public async Task<IActionResult> StoreById(int id)
         {
             _logger.LogInformation("Getting store by id", id);
-            var store = _storeRepository.GetOneStoreById(id);
+            var store = await _storeRepository.GetOneStoreById(id);
             return store == null ? (IActionResult) NotFound() : Ok(store);
         }
 
         [HttpPost]
-        public IActionResult CreateStore(StoreUpsertInput input)
+        public async Task<IActionResult> CreateStore(StoreUpsertInput input)
         {
             _logger.LogInformation("Creating a store", input);
-            var persistedStore = _storeRepository.Insert(input.Id, input.Name, input.Region, input.StreetName, input.Number);
+            var persistedStore = await _storeRepository.Insert(input.Id, input.Name, input.Region, input.StreetName, input.Number);
             return Created($"/stores/{persistedStore.Id}", persistedStore);
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateStore(int id, StoreUpsertInput input)
+        public async Task<IActionResult> UpdateStore(int id, StoreUpsertInput input)
         {
             _logger.LogInformation("Updating a store", input);
             try
             {
-                var store = _storeRepository.Update(input.Id, input.Name, input.Region, input.StreetName, input.Number);
+                var store = await _storeRepository.Update(input.Id, input.Name, input.Region, input.StreetName, input.Number);
                 return Accepted(store);
             }
             catch (NotFoundException)
@@ -59,12 +60,12 @@ namespace BasicRestAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteStore(int id)
+        public async Task<IActionResult> DeleteStore(int id)
         {
             _logger.LogInformation("Deleting a store", id);
             try
             {
-                _storeRepository.Delete(id);
+                await _storeRepository.Delete(id);
                return NoContent();
             }
             catch (NotFoundException)
